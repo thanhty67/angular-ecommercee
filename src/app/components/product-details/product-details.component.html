@@ -1,13 +1,22 @@
 <div class="details-section">
   <div class="container-fluid">
-    <img class="detail-img" src="{{ product.imageUrl }}" />
-    <h3>{{ product.name }}</h3>
-    <a href="#" class="primary-btn">Add to cart</a>
+    <img
+      [src]="product != null ? product.imageUrl : null"
+      class="detail-img"
+      [alt]="product != null ? product.name : 'product title'"
+    />
+    <h3>{{ product != null ? product.name : "Loadding Product" }}</h3>
+    <div class="price">
+      {{ product != null ? product.unitPrice : "Loading.." }}
+
+      <button (click)="addToCart(product)" class="btn btn-primary btn-sm">
+        Add to cart
+      </button>
+    </div>
 
     <hr />
-
     <h4>Description</h4>
-    <p>{{ product.description }}</p>
+    <p>{{ product != null ? product.description : "Loading..." }}</p>
 
     <a class="mt-5" routerLink="/products"> Back to Product list</a>
   </div>
