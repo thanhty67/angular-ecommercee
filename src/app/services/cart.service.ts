@@ -6,52 +6,72 @@ import { Subject } from 'rxjs';
   providedIn: 'root',
 })
 export class CartService {
-  cartItiems: CartItem[] = [];
+  cartItems: CartItem[] = [];
 
   totalPrice: Subject<number> = new Subject<number>();
-  totalQuanity: Subject<number> = new Subject<number>();
+  totalQuantity: Subject<number> = new Subject<number>();
 
   constructor() { }
 
   addToCart(theCartItem: CartItem) {
-    //check if we alreadfy have the item in ourt cart
+    //check if we already have the item in our cart
     let alreadyExistInCart: boolean = false;
     let existingCartItem: CartItem | undefined = undefined;
 
 
-    if (this.cartItiems.length > 0) {
+    if (this.cartItems.length > 0) {
       //find the item in the cart based on item id
-      
-      existingCartItem = this.cartItiems.find(tempCartItem => tempCartItem.id === theCartItem.id);
-      
+
+      existingCartItem = this.cartItems.find(tempCartItem => tempCartItem.id === theCartItem.id);
+
       //check if we found it
       alreadyExistInCart = (existingCartItem != undefined);
     }
     if (alreadyExistInCart) {
       existingCartItem!.quantity++;
     } else {
-      this.cartItiems.push(theCartItem);
+      this.cartItems.push(theCartItem);
     }
 
-    //compute cart total price and quanity
+    //compute cart total price and quality
     this.computeCartTotals();
+  }
+
+  removeCart(theCartItem: CartItem) {
+    //get index of item in array
+    const itemIndex = this.cartItems.findIndex((tempCartItem) => tempCartItem.id === theCartItem.id);
+
+    //if found
+    if (itemIndex > -1) {
+      this.cartItems.splice(itemIndex, 1);
+    }
+  }
+
+  decrementQuantity(theCartItem: CartItem) {
+    theCartItem.quantity--;
+
+    if (theCartItem.quantity === 0) {
+      this.removeCart(theCartItem);
+    } else{
+      this.computeCartTotals();
+    }
   }
   computeCartTotals() {
     let totalPriceValue: number = 0;
-    let totalQuanityValue: number = 0;
+    let totalQuantityValue: number = 0;
 
-    for (let currentCartItem of this.cartItiems) {
+    for (let currentCartItem of this.cartItems) {
       totalPriceValue += currentCartItem.quantity * currentCartItem.unitPrice;
-      totalQuanityValue += currentCartItem.quantity;
+      totalQuantityValue += currentCartItem.quantity;
 
-      //publish the new values .. all subcribers will recive the new data
+      //publish the new values .. all subscribers will receive the new data
       this.totalPrice.next(totalPriceValue);
-      this.totalQuanity.next(totalQuanityValue);
+      this.totalQuantity.next(totalQuantityValue);
     }
     console.log('Content of cart')
-    for (let tempCartItem of this.cartItiems) {
+    for (let tempCartItem of this.cartItems) {
       const subTotalPrice = tempCartItem.quantity * tempCartItem.unitPrice;
-      console.log(`name: ${tempCartItem.name}, quanity: ${tempCartItem.quantity}, subTotalPrice: ${subTotalPrice.toFixed(2)}`)
+      console.log(`name: ${tempCartItem.name}, quantity: ${tempCartItem.quantity}, subTotalPrice: ${subTotalPrice.toFixed(2)}`)
 
     }
   }
