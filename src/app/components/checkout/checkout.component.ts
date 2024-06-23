@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ShopFormService } from '../../services/shop-form.service';
 import { State } from '../../common/state';
+import { MikeShopValidators } from '../../validators/mike-shop-validators';
 
 @Component({
   selector: 'app-checkout',
@@ -30,34 +31,40 @@ export class CheckoutComponent implements OnInit {
     this.checkOutFormGroup = this.formBuilder.group({
       customer: this.formBuilder.group({
         firstName: new FormControl('',
-          [Validators.required, Validators.minLength(2)]),
+          [Validators.required, Validators.minLength(2), MikeShopValidators.notOnlyWhiteSpace]),
         lastName: new FormControl('',
-          [Validators.required, Validators.minLength(2)]),
+          [Validators.required, Validators.minLength(2), MikeShopValidators.notOnlyWhiteSpace]),
         email: new FormControl('',
-          [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')])
+          [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'), MikeShopValidators.notOnlyWhiteSpace]),
       }),
       shippingAddress: this.formBuilder.group({
-        street: ['', Validators.required],
-        city: ['', Validators.required],
-        state: ['', Validators.required],
-        zipCode: ['', Validators.required],
-        country: ['', Validators.required],
+        street: new FormControl('', [Validators.required,
+        Validators.minLength(2), MikeShopValidators.notOnlyWhiteSpace]),
+        city: new FormControl('', [Validators.required,
+        Validators.minLength(2), MikeShopValidators.notOnlyWhiteSpace]),
+        state: new FormControl('', [Validators.required]),
+        country: new FormControl('', [Validators.required]),
+        zipCode: new FormControl('', [Validators.required,
+        Validators.minLength(2), MikeShopValidators.notOnlyWhiteSpace]),
       }),
       billingAddress: this.formBuilder.group({
-        street: ['', Validators.required],
-        city: ['', Validators.required],
-        state: ['', Validators.required],
-        zipCode: ['', Validators.required],
-        country: ['', Validators.required],
+        street: new FormControl('', [Validators.required,
+        Validators.minLength(2), MikeShopValidators.notOnlyWhiteSpace]),
+        city: new FormControl('', [Validators.required,
+        Validators.minLength(2), MikeShopValidators.notOnlyWhiteSpace]),
+        state: new FormControl('', [Validators.required]),
+        country: new FormControl('', [Validators.required]),
+        zipCode: new FormControl('', [Validators.required,
+        Validators.minLength(2), MikeShopValidators.notOnlyWhiteSpace]),
       }),
       creditCard: this.formBuilder.group({
-        cardType: ['', Validators.required],
-        nameOnCard: ['', Validators.required],
-        cardNumber: ['', Validators.required],
-        securityCode: ['', Validators.required],
-        expirationMonth: ['', Validators.required],
-        expirationYear: ['', Validators.required],
-
+        cardType: new FormControl('', [Validators.required]),
+        nameOnCard: new FormControl('', [Validators.required,
+        Validators.minLength(2), MikeShopValidators.notOnlyWhiteSpace]),
+        cardNumber: new FormControl('', [Validators.required, Validators.pattern('[0-9]{16}')]),
+        securityCode: new FormControl('', [Validators.required, Validators.pattern('[0-9]{3}')]),
+        expirationMonth: [''],
+        expirationYear: ['']
       }),
     })
     //populate credit card month and year
