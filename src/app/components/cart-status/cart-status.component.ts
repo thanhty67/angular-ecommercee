@@ -1,7 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductService } from '../../services/product.service';
-import { Product } from '../../common/product';
-import { ActivatedRoute } from '@angular/router';
 import { CartService } from '../../services/cart.service';
 
 @Component({
@@ -11,13 +8,11 @@ import { CartService } from '../../services/cart.service';
 })
 export class CartStatusComponent implements OnInit{
   totalPrice: number = 0.0;
-  totalQuanity: number = 0;
+  totalQuantity: number = 0;
 
 
   constructor(
-    private productService: ProductService,
     private cartService: CartService,
-    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -29,8 +24,8 @@ export class CartStatusComponent implements OnInit{
       data => this.totalPrice = data
     )
 
-    this.cartService.totalQuanity.subscribe(
-      data => this.totalQuanity = data
+    this.cartService.totalQuantity.subscribe(
+      data => this.totalQuantity = data
     )
   }
 
