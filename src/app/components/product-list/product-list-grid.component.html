@@ -37,12 +37,10 @@
 
       <!-- begin footer -->
 
-      <div class="footer-pagination justify-content-center">
+      <div class="">
         <div class="row">
-          <div class="col-md-6"></div>
-          <div class="col-md-6">
             <div class="row">
-              <div class="col-md-9">
+              <div class="pagination justify-content-center col-md-11">
                 <ngb-pagination
                   [(page)]="thePageNumber"
                   [pageSize]="thePageSize"
@@ -53,7 +51,7 @@
                 >
                 </ngb-pagination>
               </div>
-              <div class="col-md-3 mt-2">
+              <div class="col-md-1 mt-2">
                 <span class="mr-2">Page size</span>
                 <select
                   #myPageSelect
@@ -66,7 +64,6 @@
                 </select>
               </div>
             </div>
-          </div>
         </div>
       </div>
 
